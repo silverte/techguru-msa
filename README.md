@@ -1,10 +1,10 @@
 # Stacks for TechGuru MSA Champions
 
-## node.js 설치
+## node.js install
 
-https://nodejs.org/ko LTS 버전 설치
+https://nodejs.org/ko LTS version
 
-## cdk CLI 설치
+## cdk CLI install
 
 npm install -g aws-cdk
 
