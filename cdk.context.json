@@ -1,0 +1,216 @@
+{
+  "availability-zones:account=891620194037:region=ap-northeast-2": [
+    "ap-northeast-2a",
+    "ap-northeast-2b",
+    "ap-northeast-2c",
+    "ap-northeast-2d"
+  ],
+  "vpc-provider:account=891620194037:filter.tag:Name=vpc-techguru:region=ap-northeast-2:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-0fe1fa466a6abc9a4",
+    "vpcCidrBlock": "10.0.0.0/16",
+    "ownerAccountId": "891620194037",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Ingress",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-045a51d5e16bb9b65",
+            "cidr": "10.0.0.0/24",
+            "availabilityZone": "ap-northeast-2a",
+            "routeTableId": "rtb-0844724edf344adee"
+          },
+          {
+            "subnetId": "subnet-00d339b53e7f47a85",
+            "cidr": "10.0.1.0/24",
+            "availabilityZone": "ap-northeast-2b",
+            "routeTableId": "rtb-0ec9c65d14475f8ad"
+          },
+          {
+            "subnetId": "subnet-0bb0d6cf4e744fecb",
+            "cidr": "10.0.2.0/24",
+            "availabilityZone": "ap-northeast-2c",
+            "routeTableId": "rtb-01e885a44322d3421"
+          }
+        ]
+      },
+      {
+        "name": "Rds",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-0265902873c70a7d0",
+            "cidr": "10.0.6.48/28",
+            "availabilityZone": "ap-northeast-2a",
+            "routeTableId": "rtb-03ffe91db75881d4e"
+          },
+          {
+            "subnetId": "subnet-07419a80a40469efe",
+            "cidr": "10.0.6.64/28",
+            "availabilityZone": "ap-northeast-2b",
+            "routeTableId": "rtb-0dd4a253898898c16"
+          },
+          {
+            "subnetId": "subnet-07e8f3daa0a2810b8",
+            "cidr": "10.0.6.80/28",
+            "availabilityZone": "ap-northeast-2c",
+            "routeTableId": "rtb-0e12eb39ced07abc8"
+          }
+        ]
+      },
+      {
+        "name": "App",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-055181cf4011c3572",
+            "cidr": "10.0.3.0/24",
+            "availabilityZone": "ap-northeast-2a",
+            "routeTableId": "rtb-015c1a47bff499e78"
+          },
+          {
+            "subnetId": "subnet-02db8de950bbe8268",
+            "cidr": "10.0.4.0/24",
+            "availabilityZone": "ap-northeast-2b",
+            "routeTableId": "rtb-09e8a6c91653df052"
+          },
+          {
+            "subnetId": "subnet-091b3547a89465cbb",
+            "cidr": "10.0.5.0/24",
+            "availabilityZone": "ap-northeast-2c",
+            "routeTableId": "rtb-0ff47fa6c069bb5c2"
+          }
+        ]
+      },
+      {
+        "name": "Msk",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-0b19cb1472b10bc3c",
+            "cidr": "10.0.6.0/28",
+            "availabilityZone": "ap-northeast-2a",
+            "routeTableId": "rtb-0e15d9be71bac29c9"
+          },
+          {
+            "subnetId": "subnet-05b15e3eb8a44673c",
+            "cidr": "10.0.6.16/28",
+            "availabilityZone": "ap-northeast-2b",
+            "routeTableId": "rtb-0f438cd4368fe7446"
+          },
+          {
+            "subnetId": "subnet-012d3308937e09382",
+            "cidr": "10.0.6.32/28",
+            "availabilityZone": "ap-northeast-2c",
+            "routeTableId": "rtb-09223eb7900fe10ba"
+          }
+        ]
+      }
+    ]
+  },
+  "vpc-provider:account=891620194037:filter.vpc-id=vpc-0fe1fa466a6abc9a4:region=ap-northeast-2:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-0fe1fa466a6abc9a4",
+    "vpcCidrBlock": "10.0.0.0/16",
+    "ownerAccountId": "891620194037",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Ingress",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-045a51d5e16bb9b65",
+            "cidr": "10.0.0.0/24",
+            "availabilityZone": "ap-northeast-2a",
+            "routeTableId": "rtb-0844724edf344adee"
+          },
+          {
+            "subnetId": "subnet-00d339b53e7f47a85",
+            "cidr": "10.0.1.0/24",
+            "availabilityZone": "ap-northeast-2b",
+            "routeTableId": "rtb-0ec9c65d14475f8ad"
+          },
+          {
+            "subnetId": "subnet-0bb0d6cf4e744fecb",
+            "cidr": "10.0.2.0/24",
+            "availabilityZone": "ap-northeast-2c",
+            "routeTableId": "rtb-01e885a44322d3421"
+          }
+        ]
+      },
+      {
+        "name": "Rds",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-0265902873c70a7d0",
+            "cidr": "10.0.6.48/28",
+            "availabilityZone": "ap-northeast-2a",
+            "routeTableId": "rtb-03ffe91db75881d4e"
+          },
+          {
+            "subnetId": "subnet-07419a80a40469efe",
+            "cidr": "10.0.6.64/28",
+            "availabilityZone": "ap-northeast-2b",
+            "routeTableId": "rtb-0dd4a253898898c16"
+          },
+          {
+            "subnetId": "subnet-07e8f3daa0a2810b8",
+            "cidr": "10.0.6.80/28",
+            "availabilityZone": "ap-northeast-2c",
+            "routeTableId": "rtb-0e12eb39ced07abc8"
+          }
+        ]
+      },
+      {
+        "name": "App",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-055181cf4011c3572",
+            "cidr": "10.0.3.0/24",
+            "availabilityZone": "ap-northeast-2a",
+            "routeTableId": "rtb-015c1a47bff499e78"
+          },
+          {
+            "subnetId": "subnet-02db8de950bbe8268",
+            "cidr": "10.0.4.0/24",
+            "availabilityZone": "ap-northeast-2b",
+            "routeTableId": "rtb-09e8a6c91653df052"
+          },
+          {
+            "subnetId": "subnet-091b3547a89465cbb",
+            "cidr": "10.0.5.0/24",
+            "availabilityZone": "ap-northeast-2c",
+            "routeTableId": "rtb-0ff47fa6c069bb5c2"
+          }
+        ]
+      },
+      {
+        "name": "Msk",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-0b19cb1472b10bc3c",
+            "cidr": "10.0.6.0/28",
+            "availabilityZone": "ap-northeast-2a",
+            "routeTableId": "rtb-0e15d9be71bac29c9"
+          },
+          {
+            "subnetId": "subnet-05b15e3eb8a44673c",
+            "cidr": "10.0.6.16/28",
+            "availabilityZone": "ap-northeast-2b",
+            "routeTableId": "rtb-0f438cd4368fe7446"
+          },
+          {
+            "subnetId": "subnet-012d3308937e09382",
+            "cidr": "10.0.6.32/28",
+            "availabilityZone": "ap-northeast-2c",
+            "routeTableId": "rtb-09223eb7900fe10ba"
+          }
+        ]
+      }
+    ]
+  }
+}
