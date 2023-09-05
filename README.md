@@ -12,6 +12,10 @@ npm install -g aws-cdk
 
 yarn install
 
+## CDK 실행
+
+bash setup.sh [profile]
+
 ## Useful commands
 
 - `npm run build` compile typescript to js
