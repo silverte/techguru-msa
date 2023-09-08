@@ -1,16 +1,16 @@
-import * as ec2 from "aws-cdk-lib/aws-ec2";
-import * as rds from "aws-cdk-lib/aws-rds";
-import { Construct } from "constructs";
-import * as cdk from "aws-cdk-lib";
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as rds from 'aws-cdk-lib/aws-rds';
+import { Construct } from 'constructs';
+import * as cdk from 'aws-cdk-lib';
 
 const MYSQL_ENGINE_VERSION = rds.AuroraMysqlEngineVersion.VER_2_11_3;
 const RDS_INSTANCE_CLASS = ec2.InstanceClass.T3;
 const RDS_INSTANCE_SIZE = ec2.InstanceSize.SMALL;
-export const RDS_PORT = 3396;
+export const RDS_PORT = 3306;
 
 export enum RdsName {
-  CUSTOMER = "customer",
-  ORDER = "order",
+  CUSTOMER = 'customer',
+  ORDER = 'order',
 }
 
 export type Parameters = {
@@ -45,11 +45,11 @@ export class RdsConstruct extends Construct {
     const rdsVersion = props.rdsEngineVersion || MYSQL_ENGINE_VERSION;
 
     const subnetGroup = new rds.SubnetGroup(this, `RdsSubnetGroup-${props.rdsName}`, {
-      description: "Subnet Group for RDS",
+      description: 'Subnet Group for RDS',
       vpc: props.vpc,
       subnetGroupName: `sng-rds-${props.rdsName}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      vpcSubnets: { subnetGroupName: "Rds" },
+      vpcSubnets: { subnetGroupName: 'Rds' },
     });
 
     this.clusterParameterGroup = new rds.ParameterGroup(this, `ClusterParameterGroup-${props.rdsName}`, {
@@ -71,8 +71,8 @@ export class RdsConstruct extends Construct {
         version: rdsVersion,
       }),
       vpc: props.vpc,
-      credentials: rds.Credentials.fromPassword("admin", new cdk.SecretValue("admin123")),
-      writer: rds.ClusterInstance.provisioned("writer", {
+      credentials: rds.Credentials.fromPassword('admin', new cdk.SecretValue('admin123')),
+      writer: rds.ClusterInstance.provisioned('writer', {
         instanceType: ec2.InstanceType.of(
           props.instanceClass || RDS_INSTANCE_CLASS,
           props.instanceSize || RDS_INSTANCE_SIZE

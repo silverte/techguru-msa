@@ -43,7 +43,7 @@ if (process.env.STAGE !== 'Vpc') {
     .withBlueprintProps({})
     .resourceProvider(blueprints.GlobalResources.Vpc, new blueprints.VpcProvider(vpc.vpcId))
     .useDefaultSecretEncryption(false) // set to false to turn secret encryption off (non-production/demo cases)
-    .build(app, 'Eks');
+    .build(app, 'eks-eda');
 
   new MskStack(app, 'Msk', stackProps);
 
