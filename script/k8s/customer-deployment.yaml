@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: customer
+  template:
+    metadata:
+      labels:
+        app: customer
+    spec:
+      containers:
+        - name: customer
+          image: $image
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BOOTSTRAP_SERVER
+              value: $bootstrap-server
+              # valueFrom:
+              #   configMapKeyRef:
+              #     key: bootstrap-server
+              #     name: msk-profile
+            - name: RDS_ENDPOINT_CUSTOMER
+              value: $rds-endpoint-customer
+              # valueFrom:
+              #   configMapKeyRef:
+              #     key: rds-endpoint-customer
+              #     name: rds-profile
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'

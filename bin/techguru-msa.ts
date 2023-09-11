@@ -16,14 +16,13 @@ const stackProps = {
 
 const app = new App();
 
-const vpcStack = new VpcStack(app, 'Vpc', stackProps);
-const vpc = ec2.Vpc.fromLookup(vpcStack, 'Vpc', {
-  vpcName: 'vpc-techguru',
-});
-
-console.log(vpc.vpcId);
+const vpcStack = new VpcStack(app, 'vpc-techguru', stackProps);
 
 if (process.env.STAGE !== 'Vpc') {
+  const vpc = ec2.Vpc.fromLookup(vpcStack, 'Vpc', {
+    vpcName: 'vpc-techguru',
+  });
+
   const addOns: Array<blueprints.ClusterAddOn> = [
     new blueprints.addons.ArgoCDAddOn(),
     new blueprints.addons.CalicoOperatorAddOn(),
@@ -45,11 +44,11 @@ if (process.env.STAGE !== 'Vpc') {
     .useDefaultSecretEncryption(false) // set to false to turn secret encryption off (non-production/demo cases)
     .build(app, 'eks-eda');
 
-  new MskStack(app, 'Msk', stackProps);
+  new MskStack(app, 'msk-eda', stackProps);
 
-  new RdsCustomerStack(app, 'RdsCustomer', stackProps);
+  new RdsCustomerStack(app, 'rds-customer', stackProps);
 
-  new RdsOrderStack(app, 'RdsOrder', stackProps);
+  new RdsOrderStack(app, 'rds-order', stackProps);
 }
 
 app.synth();

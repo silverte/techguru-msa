@@ -89,6 +89,12 @@ export class RdsConstruct extends Construct {
       clusterIdentifier: `rds-${props.rdsName}`,
       securityGroups: props.securityGroups,
       storageEncrypted: true,
+      defaultDatabaseName: `${props.rdsName}db`,
+    });
+
+    new cdk.CfnOutput(this, `rds-endpoint-${props.rdsName}`, {
+      value: this.cluster.clusterEndpoint.hostname,
+      exportName: `rds-endpoint-${props.rdsName}`,
     });
   }
 }
