@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# csi driver add-on 설치
+eksctl create iamserviceaccount \
+  --name ebs-csi-controller-sa \
+  --namespace kube-system \
+  --cluster eks-eda \
+  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+  --approve \
+  --role-only \
+  --role-name AmazonEKS_EBS_CSI_DriverRole
+eksctl create addon --name aws-ebs-csi-driver --cluster my-cluster \
+  --service-account-role-arn arn:aws:iam::$ACCOUNT_ID:role/AmazonEKS_EBS_CSI_DriverRole --force
+
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 
 # storage class 생성

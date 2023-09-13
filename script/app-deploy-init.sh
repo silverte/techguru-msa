@@ -4,7 +4,7 @@ export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/doc
 export BASE_DIR=~/environment/src
 export STACKS=$(aws cloudformation describe-stacks)
 
-# kafka 라이브러리 다운로드
+#kafka 라이브러리 다운로드
 mkdir ~/environment/src
 wget https://archive.apache.org/dist/kafka/2.6.2/kafka_2.12-2.6.2.tgz -P $BASE_DIR
 #extract archive file
@@ -32,10 +32,10 @@ cd $BASE_DIR/amazon-msk-spring-boot-eda-customer/customer-service
 ./gradlew build
 docker build -t customer .
 #java -jar ./build/libs/customer-service-0.0.1-SNAPSHOT.jar
-export= REPOSITORY_URI=$(aws ecr create-repository --repository-name customer-service --region ap-northeast-2 | jq -r '.repository.repositoryUri')
+export= CUSTOMER_REPOSITORY_URI=$(aws ecr create-repository --repository-name customer-service --region ap-northeast-2 | jq -r '.repository.repositoryUri')
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
-docker tag customer:latest $REPOSITORY_URI
-docker push $REPOSITORY_URI
+docker tag customer:latest $CUSTOMER_REPOSITORY_URI
+docker push $CUSTOMER_REPOSITORY_URI
 
 # order app build 
 export RDS_ENDPOINT_ORDER=$(echo $STACKS | jq -r '.Stacks[]?.Outputs[]? | select(.ExportName=="rds-endpoint-order") | .OutputValue')
@@ -43,19 +43,27 @@ cd $BASE_DIR/amazon-msk-spring-boot-eda-order/order-service
 ./gradlew build
 docker build -t order .
 
-export= REPOSITORY_URI=$(aws ecr create-repository --repository-name order-service --region ap-northeast-2 | jq -r '.repository.repositoryUri')
-aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
-docker tag order:latest $REPOSITORY_URI
-docker push $REPOSITORY_URI
+export= ORDER_REPOSITORY_URI=$(aws ecr create-repository --repository-name order-service --region ap-northeast-2 | jq -r '.repository.repositoryUri')
+aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ORDER_REPOSITORY_URI
+docker tag order:latest $ORDER_REPOSITORY_URI
+docker push $ORDER_REPOSITORY_URI
 
 cd $BASE_DIR/amazon-msk-spring-boot-eda-customer/customer-service/k8s
-sed -i '' -e s/\$image/$(echo -n $REPOSITORY_URI)/                     \
-          -e s/\$bootstrap-server/$(echo -n $BOOTSTRAP_SERVER)/        \
-          -e s/\$rds-endpoint-order/$(echo -n $RDS_ENDPOINT_CUSTOMER)/ \
-          ./customer-deployment.yaml
+sed -i  -e s/\$image/$(echo -n $CUSTOMER_REPOSITORY_URI | cut -d '/' -f 1)\\/customer-service/g \
+        -e s/\$bootstrap-server/$(echo -n $BOOTSTRAP_SERVER)/g                                  \
+        -e s/\$rds-endpoint-customer/$(echo -n $RDS_ENDPOINT_CUSTOMER)/g                        \
+        ./customer-deployment.yaml
 
 cd $BASE_DIR/amazon-msk-spring-boot-eda-order/order-service/k8s
-sed -i '' -e s/\$image/$(echo -n $REPOSITORY_URI)/                     \
-          -e s/\$bootstrap-server/$(echo -n $BOOTSTRAP_SERVER)/        \
-          -e s/\$rds-endpoint-order/$(echo -n $RDS_ENDPOINT_ORDER)/    \
-          ./order-deployment.yaml
+sed -i  -e s/\$image/$(echo -n $ORDER_REPOSITORY_URI | cut -d '/' -f 1)\\/order-service/g \
+        -e s/\$bootstrap-server/$(echo -n $BOOTSTRAP_SERVER)/g                            \
+        -e s/\$rds-endpoint-order/$(echo -n $RDS_ENDPOINT_ORDER)/g                        \
+        ./order-deployment.yaml
+
+cp $BASE_DIR/amazon-msk-spring-boot-eda-customer/customer-service/k8s/* $BASE_DIR/techguru-msa/script/k8s
+cp $BASE_DIR/amazon-msk-spring-boot-eda-order/order-service/k8s/* $BASE_DIR/techguru-msa/script/k8s
+
+cd $BASE_DIR/techguru-msa/script/k8s
+kubectl create -f *-deployment.yaml
+kubectl create -f *-service.yaml
+kubectl create -f ingress.yaml

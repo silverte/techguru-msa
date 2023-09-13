@@ -8,11 +8,12 @@ metadata:
     # Ingress Core Settings
     kubernetes.io/ingress.class: 'alb'
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/group.name: 'techguru'
+    alb.ingress.kubernetes.io/subnets: 'vpc-techguru/TechGuru/IngressSubnet1, vpc-techguru/TechGuru/IngressSubnet2, vpc-techguru/TechGuru/IngressSubnet2'
+    #alb.ingress.kubernetes.io/group.name: 'techguru'
     alb.ingress.kubernetes.io/load-balancer-name: 'alb-eda-ingress'
-    alb.ingress.kubernetes.io/manage-backend-security-group-rules: 'true'
+    #alb.ingress.kubernetes.io/manage-backend-security-group-rules: 'true'
     alb.ingress.kubernetes.io/backend-protocol: HTTP
-    alb.ingress.kubernetes.io/target-type: IP
+    alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
     # Health Check Settings
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
@@ -34,17 +35,24 @@ spec:
   rules:
     - http:
         paths:
-          - path: /customer
+          - path: /customer-order/customer-service
             pathType: Prefix
             backend:
               service:
                 name: customer
                 port:
                   number: 8080
-          - path: /order
+          - path: /customer-order/order-service
             pathType: Prefix
             backend:
               service:
                 name: order
+                port:
+                  number: 8080
+          - path: /customer-order/cqrs-service
+            pathType: Prefix
+            backend:
+              service:
+                name: cqrs
                 port:
                   number: 8080

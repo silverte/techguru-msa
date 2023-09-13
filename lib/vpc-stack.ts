@@ -78,9 +78,5 @@ export class VpcStack extends Stack {
     this.vpc.addInterfaceEndpoint('sts', {
       service: ec2.InterfaceVpcEndpointAwsService.STS,
     });
-
-    ec2.Vpc.fromLookup(this, 'VpcLookUp', {
-      vpcName: 'vpc-techguru',
-    });
   }
 }

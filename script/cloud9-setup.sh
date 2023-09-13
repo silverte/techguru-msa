@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # aws cli 설치
-sudo yum remove awscli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
@@ -33,5 +32,5 @@ sudo yum install -y apache-maven
 sudo yum install -y java-11-amazon-corretto.x86_64
 
 # java 버전 변경
-# sudo alternatives --config java
-# sudo alternatives --config javac
+sudo alternatives --config java
+sudo alternatives --config javac
