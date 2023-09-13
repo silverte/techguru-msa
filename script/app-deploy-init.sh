@@ -25,7 +25,8 @@ $BASE_DIR/kafka_2.12-2.6.2/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER -
 
 # topic 확인
 $BASE_DIR/kafka_2.12-2.6.2/bin/kafka-topics.sh --bootstrap-server $BOOTSTRAP_SERVER --list
-# customer app build
+
+# customer app build and ECR push
 STACKS=$(aws cloudformation describe-stacks)
 export RDS_ENDPOINT_CUSTOMER=$(echo $STACKS | jq -r '.Stacks[]?.Outputs[]? | select(.ExportName=="rds-endpoint-customer") | .OutputValue')
 cd $BASE_DIR/amazon-msk-spring-boot-eda-customer/customer-service
@@ -33,11 +34,11 @@ cd $BASE_DIR/amazon-msk-spring-boot-eda-customer/customer-service
 docker build -t customer .
 #java -jar ./build/libs/customer-service-0.0.1-SNAPSHOT.jar
 export= CUSTOMER_REPOSITORY_URI=$(aws ecr create-repository --repository-name customer-service --region ap-northeast-2 | jq -r '.repository.repositoryUri')
-aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $CUSTOMER_REPOSITORY_URI
 docker tag customer:latest $CUSTOMER_REPOSITORY_URI
 docker push $CUSTOMER_REPOSITORY_URI
 
-# order app build 
+# order app build and ECR push
 export RDS_ENDPOINT_ORDER=$(echo $STACKS | jq -r '.Stacks[]?.Outputs[]? | select(.ExportName=="rds-endpoint-order") | .OutputValue')
 cd $BASE_DIR/amazon-msk-spring-boot-eda-order/order-service
 ./gradlew build
@@ -48,6 +49,7 @@ aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --
 docker tag order:latest $ORDER_REPOSITORY_URI
 docker push $ORDER_REPOSITORY_URI
 
+# update deployment manifest values
 cd $BASE_DIR/amazon-msk-spring-boot-eda-customer/customer-service/k8s
 sed -i  -e s/\$image/$(echo -n $CUSTOMER_REPOSITORY_URI | cut -d '/' -f 1)\\/customer-service/g \
         -e s/\$bootstrap-server/$(echo -n $BOOTSTRAP_SERVER)/g                                  \
@@ -60,10 +62,11 @@ sed -i  -e s/\$image/$(echo -n $ORDER_REPOSITORY_URI | cut -d '/' -f 1)\\/order-
         -e s/\$rds-endpoint-order/$(echo -n $RDS_ENDPOINT_ORDER)/g                        \
         ./order-deployment.yaml
 
-cp $BASE_DIR/amazon-msk-spring-boot-eda-customer/customer-service/k8s/* $BASE_DIR/techguru-msa/script/k8s
-cp $BASE_DIR/amazon-msk-spring-boot-eda-order/order-service/k8s/* $BASE_DIR/techguru-msa/script/k8s
+# create deployment, servic and ingress
+cp $BASE_DIR/amazon-msk-spring-boot-eda-customer/customer-service/k8s/* ~/environment/techguru-msa/script/k8s
+cp $BASE_DIR/amazon-msk-spring-boot-eda-order/order-service/k8s/* ~/environment/techguru-msa/script/k8s
 
-cd $BASE_DIR/techguru-msa/script/k8s
+cd ~/environment/techguru-msa/script/k8s
 kubectl create -f *-deployment.yaml
 kubectl create -f *-service.yaml
 kubectl create -f ingress.yaml

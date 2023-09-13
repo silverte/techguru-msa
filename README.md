@@ -27,7 +27,7 @@ sh setup.sh
 - sh cloud9-setup.sh (java-11-amazon-corretto 버전으로 선택)
 - sg-XXXXX-eks-cluster-sg-eks-eda-XXXX inbound rule 추가: 443 cloud9 private IP or any
 - kubectl get no 확인
-- sh assume-role.sh
+- sh assume-role.sh (assume role arn 변경 eks-eda-eksedaAccessRoleXXXXXXX)
 - sh app-deploy-init.sh
 - alb-eda-ingress security group ingress rule 추가 80 any
 - alb DNS + /customer-order/customer-service + swagger/ 페이지 확인
