@@ -30,4 +30,4 @@ sh setup.sh
 - sh assume-role.sh (assume role arn 변경 eks-eda-eksedaAccessRoleXXXXXXX)
 - sh app-deploy-init.sh
 - alb-eda-ingress security group ingress rule 추가 80 any
-- alb DNS + /customer-order/customer-service + swagger/ 페이지 확인
+- alb DNS + /customer-order/customer-service + swagger-ui/ 페이지 확인
