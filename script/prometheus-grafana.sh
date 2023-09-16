@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
+export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
+
 # csi driver add-on 설치
 eksctl create iamserviceaccount \
   --name ebs-csi-controller-sa \
@@ -8,8 +11,9 @@ eksctl create iamserviceaccount \
   --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
   --approve \
   --role-only \
-  --role-name AmazonEKS_EBS_CSI_DriverRole
-eksctl create addon --name aws-ebs-csi-driver --cluster my-cluster \
+  --role-name AmazonEKS_EBS_CSI_DriverRole \
+  -- region $AWS_REGION
+eksctl create addon --name aws-ebs-csi-driver --cluster eks-eda \
   --service-account-role-arn arn:aws:iam::$ACCOUNT_ID:role/AmazonEKS_EBS_CSI_DriverRole --force
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts

@@ -21,4 +21,22 @@ eksctl create iamidentitymapping --cluster eks-eda --region=$AWS_REGION \
     --arn arn:aws:iam::$ACCOUNT_ID:user/silverte --group system:masters --username silverte \
     --no-duplicate-arns
 
+eksctl create iamidentitymapping --cluster eks-eda --region=$AWS_REGION \
+    --arn arn:aws:iam::$ACCOUNT_ID:user/whchoi823 --group system:masters --username whchoi823 \
+    --no-duplicate-arns
+
+eksctl create iamidentitymapping --cluster eks-eda --region=$AWS_REGION \
+    --arn arn:aws:iam::$ACCOUNT_ID:user/scottkim --group system:masters --username scottkim \
+    --no-duplicate-arns
+
+eksctl create iamidentitymapping --cluster eks-eda --region=$AWS_REGION \
+    --arn arn:aws:iam::$ACCOUNT_ID:user/nextkong --group system:masters --username nextkong \
+    --no-duplicate-arns
+
+eksctl create iamidentitymapping --cluster eks-eda --region=$AWS_REGION \
+    --arn arn:aws:iam::$ACCOUNT_ID:user/euroup --group system:masters --username euroup \
+    --no-duplicate-arns
+
                           
+
+
